@@ -36,6 +36,20 @@ export const constantRoutes = [
     component: () => import('@/views/login/index'),
     hidden: true
   },
+  {
+    path: '/register',
+    component: () => import('@/views/login/register'),
+    hidden: true
+  },
+
+  // {
+  //   path: '/d',
+  //   children: [{
+  //     path: '/register',
+  //     name: 'register',
+  //     component: () => import('@/views/login/register'),
+  //   }]
+  // },
 
   {
     path: '/404',
@@ -51,58 +65,67 @@ export const constantRoutes = [
       path: 'dashboard',
       name: 'Dashboard',
       component: () => import('@/views/dashboard/index'),
-      meta: { title: '表盘', icon: 'dashboard' }
+      meta: { title: 'Home', icon: 'dashboard' }
     }]
   },
-
-  // {
-  //   path: '/example',
-  //   component: Layout,
-  //   redirect: '/example/table',
-  //   name: 'Example',
-  //   meta: { title: 'Example', icon: 'el-icon-s-help' },
-  //   children: [
-  //     {
-  //       path: 'table',
-  //       name: 'Table',
-  //       component: () => import('@/views/table/index'),
-  //       meta: { title: 'Table', icon: 'table' }
-  //     },
-  //     {
-  //       path: 'tree',
-  //       name: 'Tree',
-  //       component: () => import('@/views/tree/index'),
-  //       meta: { title: 'Tree', icon: 'tree' }
-  //     }
-  //   ]
-  // },
-
   {
-    path: '/ipfs',
+    path: '/deals',
     component: Layout,
     children: [
       {
         path: 'index',
         name: 'Form',
-        component: () => import('@/views/form/index'),
-        meta: { title: 'IPFS存储', icon: 'form' }
+        component: () => import('@/views/deals/index'),
+        meta: { title: 'Deals', icon: 'el-icon-money' }
+      }
+    ]
+  },
+  {
+    path: '/files',
+    component: Layout,
+    redirect: '/files/all',
+    name: 'All',
+    meta: { title: 'Files', icon: 'el-icon-files' },
+    children: [
+      {
+        path: 'table',
+        name: 'Table',
+        component: () => import('@/views/files/index'),
+        meta: { title: 'All', icon: 'el-icon-help' }
+      },
+      {
+        path: 'images',
+        name: 'Images',
+        component: () => import('@/views/tree/index'),
+        meta: { title: 'Images', icon: 'el-icon-picture' }
       }
     ]
   },
 
   {
-    path: '/filecoin',
+    path: '/network',
     component: Layout,
     children: [
       {
         path: 'index',
         name: 'Form',
-        component: () => import('@/views/form/index'),
-        meta: { title: 'filecoin交易', icon: 'form' }
+        component: () => import('@/views/network/index'),
+        meta: { title: 'Network', icon: 'el-icon-cloudy' }
       }
     ]
   },
-
+  {
+    path: '/profile',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        name: 'Profile',
+        component: () => import('@/views/profile/index'),
+        meta: { title: 'Profile', icon: 'el-icon-user-solid' }
+      }
+    ]
+  },
   // {
   //   path: '/nested',
   //   component: Layout,

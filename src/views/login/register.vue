@@ -3,7 +3,7 @@
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
 
       <div class="title-container">
-        <h3 class="title">云构存储</h3>
+        <h3 class="title">云构存储-注册</h3>
       </div>
 
       <el-form-item prop="username">
@@ -26,23 +26,41 @@
           <svg-icon icon-class="password" />
         </span>
         <el-input
-          :key="passwordType"
+          :key="passwordType1"
           ref="password"
           v-model="loginForm.password"
-          :type="passwordType"
-          placeholder="Password"
+          :type="passwordType1"
+          placeholder="Input Password"
           name="password"
           tabindex="2"
           auto-complete="on"
           @keyup.enter.native="handleLogin"
         />
-        <span class="show-pwd" @click="showPwd">
-          <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
+        <span class="show-pwd" @click="showPwd1">
+          <svg-icon :icon-class="passwordType1 === 'password' ? 'eye' : 'eye-open'" />
+        </span>
+      </el-form-item>
+      <el-form-item prop="password">
+        <span class="svg-container">
+          <svg-icon icon-class="password" />
+        </span>
+        <el-input
+          :key="passwordType2"
+          ref="password"
+          v-model="loginForm.password"
+          :type="passwordType2"
+          placeholder="Again Password"
+          name="password"
+          tabindex="2"
+          auto-complete="on"
+          @keyup.enter.native="handleLogin"
+        />
+        <span class="show-pwd" @click="showPwd2">
+          <svg-icon :icon-class="passwordType2 === 'password' ? 'eye' : 'eye-open'" />
         </span>
       </el-form-item>
 
-      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">登录</el-button>
-      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;margin-left:0px;" @click.native.prevent="handleRegister">注册</el-button>
+      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;margin-left:0px;" @click.native.prevent="handleRegistered">注册</el-button>
 
       <div class="tips">
         <span style="margin-right:20px;">username: admin</span>
@@ -83,24 +101,35 @@ export default {
         password: [{ required: true, trigger: 'blur', validator: validatePassword }]
       },
       loading: false,
-      passwordType: 'password',
+      passwordType1: 'password',
+      passwordType2: 'password',
       redirect: undefined
     }
   },
   watch: {
     $route: {
       handler: function(route) {
-        this.redirect = route.query && route.query.redirect 
+        this.redirect = route.query && route.query.redirect
       },
       immediate: true
     }
   },
   methods: {
-    showPwd() {
-      if (this.passwordType === 'password') {
-        this.passwordType = ''
+    showPwd1() {
+      if (this.passwordType1 === 'password') {
+        this.passwordType1 = ''
       } else {
-        this.passwordType = 'password'
+        this.passwordType1 = 'password'
+      }
+      this.$nextTick(() => {
+        this.$refs.password.focus()
+      })
+    },
+    showPwd2() {
+      if (this.passwordType2 === 'password') {
+        this.passwordType2 = ''
+      } else {
+        this.passwordType2 = 'password'
       }
       this.$nextTick(() => {
         this.$refs.password.focus()
@@ -111,7 +140,7 @@ export default {
         if (valid) {
           this.loading = true
           this.$store.dispatch('user/login', this.loginForm).then(() => {
-            this.$router.push({ path: this.redirect || '/' })  
+            this.$router.push({ path: this.redirect || '/' })
             this.loading = false
           }).catch(() => {
             this.loading = false
@@ -122,12 +151,23 @@ export default {
         }
       })
     },
-    handleRegister() {
-          //this.$store.dispatch('user/register', this.loginForm ).then(() => { 
-          this.$router.push({ path: '/register' })
-      //})
-    },
-   }
+    handleRegistered() {
+      this.$refs.loginForm.validate(valid => {
+        if (valid) {
+          this.loading = true
+          this.$store.dispatch('user/login', this.loginForm).then(() => {
+            this.$router.push({ path: this.redirect || '/' })
+            this.loading = false
+          }).catch(() => {
+            this.loading = false
+          })
+        } else {
+          console.log('error submit!!')
+          return false
+        }
+      })
+    }
+  }
 }
 </script>
 
