@@ -62,10 +62,10 @@
 
       <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;margin-left:0px;" @click.native.prevent="handleRegistered">注册</el-button>
 
-      <div class="tips">
+      <!-- <div class="tips">
         <span style="margin-right:20px;">username: admin</span>
         <span> password: any</span>
-      </div>
+      </div> -->
 
     </el-form>
   </div>

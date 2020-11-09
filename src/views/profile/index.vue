@@ -9,27 +9,56 @@
 <el-card class="box-card">
 
   <div slot="header" class="clearfix">
-      <div class="head-left"></div>
-      <div class="head-right"></div>
+      <div class="head-left">
+        <img src="./2.jpg" style="height:80px;width:80px;">
+      </div>
+      <div class="head-right">
+        <div style="margin-top:10px;">
+        <span>lzj</span>
+        <br>
+        <br>
+        <span>469230190@qq.com</span>
+        </div>
+      </div>
   </div>
-  <div v-for="o in 3" :key="o" class="text item">
-    {{'列表内容 ' + o }}
+  <div>
+    <div style="width:30%;float:left;">
+      <span style="color:gray;">phone</span>
+    </div>
+    <div style="width:50%;float:left;">
+      <span style="width:50px">19142755309</span>
+    </div>
+    <br>
+    <div style="width:30%;margin-top:18px;m;float:left;">
+      <span style="color:gray;">addres</span>
+    </div>
+    <div style="width:50%;margin-top:18px;float:left;">
+      <span style="width:50px">深圳市龙华区民治街道</span>
+    </div>
+    <br>
   </div>
   <el-button style="float: right; padding: 24px 0" type="text">操作按钮</el-button>
   </el-card>
 
 <el-tabs type="border-card" class="right-card">
-  <el-tab-pane label="ChartCard">
-    <chart-card title="传递的参数"  :dysncParams="dysncParamsText">
-    </chart-card>
-  </el-tab-pane>
+  
   <el-tab-pane label="Wallet List">
     <wallets title="传递的参数"  :dysncParams="dysncParamsText">
     </wallets>
   </el-tab-pane>
   <el-tab-pane label="Storage Settings">配置管理</el-tab-pane>
-  <el-tab-pane label="Edit Profile">角色管理</el-tab-pane>
-  <el-tab-pane label="Change Password">修改密码</el-tab-pane>
+  <el-tab-pane label="Edit Profile">
+    <user title="传递的参数"  :dysncParams="dysncParamsText">
+    </user>
+  </el-tab-pane>
+  <el-tab-pane label="Change Password">
+    <password title="传递的参数"  :dysncParams="dysncParamsText">
+    </password>
+  </el-tab-pane>
+  <el-tab-pane label="ChartCard">
+    <chart-card title="传递的参数"  :dysncParams="dysncParamsText">
+    </chart-card>
+  </el-tab-pane>
 </el-tabs>
 
   </div>
@@ -38,11 +67,15 @@
 
 <script>
 import ChartCard from '@/components/ChartCard'
-import Wallets from '@/components/Wallets'
+import Wallets from '@/components/Wallets/wallets'
+import User from '@/components/User'
+import Password from '@/components/User/password'
 export default {
   components:{
     ChartCard,
     Wallets,
+    User,
+    Password,
   },
   data() {
     return {
@@ -95,7 +128,6 @@ export default {
     width: 240px;
     height: 80px;
     float: right;
-    background-color:#5900ff;
   }
   .text {
     font-size: 14px;
