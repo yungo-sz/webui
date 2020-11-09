@@ -19,9 +19,13 @@
   </el-card>
 
 <el-tabs type="border-card" class="right-card">
-  <el-tab-pane label="Wallet List">
+  <el-tab-pane label="ChartCard">
     <chart-card title="传递的参数"  :dysncParams="dysncParamsText">
     </chart-card>
+  </el-tab-pane>
+  <el-tab-pane label="Wallet List">
+    <wallets title="传递的参数"  :dysncParams="dysncParamsText">
+    </wallets>
   </el-tab-pane>
   <el-tab-pane label="Storage Settings">配置管理</el-tab-pane>
   <el-tab-pane label="Edit Profile">角色管理</el-tab-pane>
@@ -34,9 +38,11 @@
 
 <script>
 import ChartCard from '@/components/ChartCard'
+import Wallets from '@/components/Wallets'
 export default {
   components:{
     ChartCard,
+    Wallets,
   },
   data() {
     return {
