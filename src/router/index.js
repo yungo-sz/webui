@@ -42,15 +42,6 @@ export const constantRoutes = [
     hidden: true
   },
 
-  // {
-  //   path: '/d',
-  //   children: [{
-  //     path: '/register',
-  //     name: 'register',
-  //     component: () => import('@/views/login/register'),
-  //   }]
-  // },
-
   {
     path: '/404',
     component: () => import('@/views/404'),
@@ -105,12 +96,27 @@ export const constantRoutes = [
   {
     path: '/network',
     component: Layout,
+    redirect: '/network',
+    name: 'All',
+    meta: { title: 'Network', icon: 'el-icon-cloudy' },
     children: [
       {
         path: 'index',
-        name: 'Form',
+        name: 'Ask',
         component: () => import('@/views/network/index'),
-        meta: { title: 'Network', icon: 'el-icon-cloudy' }
+        meta: { title: 'Ask', icon: 'el-icon-cloudy' }
+      },
+      {
+        path: 'miner',
+        name: 'Miner',
+        component: () => import('@/views/network/miner'),
+        meta: { title: 'Miner', icon: 'el-icon-picture' }
+      },
+      {
+        path: 'peers',
+        name: 'Peers',
+        component: () => import('@/views/network/peers'),
+        meta: { title: 'Peers', icon: 'el-icon-picture' }
       }
     ]
   },

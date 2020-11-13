@@ -24,11 +24,7 @@
 
   <script>
     export default {
-      methods: {
-      deleteRow(index, rows) {
-        rows.splice(index, 1);
-      }
-      },
+      
       data() {
         return {
           tableData: [{
@@ -44,7 +40,11 @@
           },]
         }
       },
-     
+     methods: {
+      deleteRow(index, rows) {
+        rows.splice(index, 1);
+      }
+      },
       
     }
   </script>

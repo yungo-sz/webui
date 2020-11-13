@@ -10,7 +10,7 @@ NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
 const whiteList = ['/login','/register'] // no redirect whitelist
 
-router.beforeEach(async(to, from, next) => {
+router.beforeEach(async(to, from, next) => { //路由跳转的时候  咋进来的 自动跳转鸭  每一个路由跳转都会吗是的
   // start progress bar
   NProgress.start()
 
@@ -20,7 +20,7 @@ router.beforeEach(async(to, from, next) => {
   // determine whether the user has logged in
   const hasToken = getToken()
 
-  if (hasToken) {
+  if (hasToken) {//有没有token 有吧 getUserInfo的时候存进去了没 
     if (to.path === '/login') {
       // if is logged in, redirect to the home page
       next({ path: '/' })
@@ -32,7 +32,7 @@ router.beforeEach(async(to, from, next) => {
       } else {
         try {
           // get user info
-          await store.dispatch('user/getInfo')
+          //await store.dispatch('user/getInfo')//调用了刚刚那个方法
 
           next()
         } catch (error) {

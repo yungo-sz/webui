@@ -55,16 +55,17 @@
 
 <script>
 import { validUsername } from '@/utils/validate'
-
+import { getToken } from '@/utils/auth' // get token from cookie
 export default {
   name: 'Login',
   data() {
     const validateUsername = (rule, value, callback) => {
-      if (!validUsername(value)) {
-        callback(new Error('Please enter the correct user name'))
-      } else {
-        callback()
-      }
+      // if (!validUsername(value)) {
+      //   callback(new Error('Please enter the correct user name'))
+      // } else {
+      //   callback()
+      // }
+      callback()
     }
     const validatePassword = (rule, value, callback) => {
       if (value.length < 6) {
@@ -111,7 +112,7 @@ export default {
         if (valid) {
           this.loading = true
           this.$store.dispatch('user/login', this.loginForm).then(() => {
-            this.$router.push({ path: this.redirect || '/' })  
+            this.$router.push({ path: this.redirect || '/' })  //  / 指向路径没 
             this.loading = false
           }).catch(() => {
             this.loading = false
@@ -123,9 +124,9 @@ export default {
       })
     },
     handleRegister() {
-          //this.$store.dispatch('user/register', this.loginForm ).then(() => { 
+          this.$store.dispatch('user/register', this.loginForm ).then(() => { 
           this.$router.push({ path: '/register' })
-      //})
+      })
     },
    }
 }

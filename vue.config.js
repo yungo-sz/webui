@@ -32,13 +32,31 @@ module.exports = {
   productionSourceMap: false,
   devServer: {
     port: port,
-    open: true,
-    overlay: {
-      warnings: false,
-      errors: true
-    },
-    before: require('./mock/mock-server.js')
+    // overlay: {
+    //   warnings: false,
+    //   errors: true
+    // },
+    // before: require('./mock/mock-server.js'),
+    proxy: {
+      '/devApi': {
+        target: process.env.VUE_APP_BASE_API,
+        pathRewrite: {
+          '^/devApi': '' 
+        },
+        ws: false,
+        changeOrigin: true
+      },
+    }
   },
+  // devServer: {
+  //   port: port,
+  //   open: true,
+  //   overlay: {
+  //     warnings: false,
+  //     errors: true
+  //   },
+  //   before: require('./mock/mock-server.js')
+  // },
   configureWebpack: {
     // provide the app's title in webpack's name field, so that
     // it can be accessed in index.html to inject the correct title.
