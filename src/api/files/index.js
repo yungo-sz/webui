@@ -7,3 +7,10 @@ export function queryAsk(params) {
     params
   })
 }
+export function dealAsk(params) {
+  return request({
+    url: '/yungo/deal',
+    method: 'post',
+    params
+  })
+}

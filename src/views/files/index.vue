@@ -120,24 +120,37 @@
   :visible.sync="deal"
   width="30%"
   >
-  <div>
-    <el-form ref="form" :model="dealform" label-width="80px">
-      <el-form-item label="miner">
-        <el-input v-model="dealform.miner"  placeholder="minerid" />
+  <div style="width:90%;height:320px">
+    <el-form ref="form" :model="dealform" label-width="120px"  v-loading="Loading">
+      <el-form-item label="MinerId">
+        <el-input v-model="dealform.Miner"  :placeholder="dealform.miner" />
+        <!-- <el-input v-model="dealform.miner"  /> -->
       </el-form-item>
 
-      <el-form-item label="MemberID">
-        <el-input v-model="dealform.MemberID"  placeholder="lzj" :disabled="true" />
+      <el-form-item label="MinPieceSize">
+        <span>{{dealform.MinPieceSize}}</span>
       </el-form-item>
-     
-      <el-form-item label="RootCid">
-        <el-input v-model="dealform.RootCid"  placeholder="lzj" :disabled="true"/>
+      <el-form-item label="MaxPieceSize">
+        <span>{{dealform.MaxPieceSize}}</span>
+      </el-form-item>
+      <el-form-item label="Expiry">
+        <span>{{dealform.Expiry}}</span>
+      </el-form-item>
+      <el-form-item label="Price">
+        <span>{{dealform.Price}}</span>
+      </el-form-item>
+      <el-form-item label="VerifiedPrice">
+        <span>{{dealform.VerifiedPrice}}</span>
       </el-form-item>
     </el-form>
+    
   </div>
+
+  
+
   <span slot="footer" class="dialog-footer">
-    <el-button @click="deal = false">取 消</el-button>
-    <el-button type="primary" @click="deal = false">确 定</el-button>
+    <el-button type="primary" @click="queryAskDeal">deal</el-button>
+    <el-button type="primary" @click="dealAsk1">确 定</el-button>
   </span>
 </el-dialog>
 
@@ -146,8 +159,8 @@
 
 <script>
 import { getList } from '@/api/table'
-import { queryAsk } from '@/api/files/'
-import { getToken } from '@/utils/auth'
+import { queryAsk,dealAsk } from '@/api/files/'
+import { getToken,getExpiryTime } from '@/utils/auth'
 
 export default {
   filters: {
@@ -168,14 +181,24 @@ export default {
       fileList: undefined,
       list: null,
       listLoading: true,
+      Loading: true,
       dialogVisible: false,
       deal:false,
+      ask:{
+        miner: '',
+      },
       dealform:{
-        // MemberID:'',
-        // MinerId:'',
-        // RootCid:'',
-        miner:'',
+        
+        miner:'f023013',
       }, 
+      dealAsk:{
+        MemberID:'',
+        MinerId:'',
+        RootCid:'',
+      },
+      // dealinfo:{
+      //   Miner :'',
+      // },
       base_api: process.env.VUE_APP_BASE_API+"yungo/upload",
       options: [{
           value: '选项1',
@@ -245,20 +268,62 @@ export default {
       })
     },
     handleDeal(param){
-      console.log(param)
       this.deal = true 
-      this.dealform.MemberID = param.MemberID
-      this.dealform.MinerId = 'f023581'
-      this.dealform.miner = 'f023581'
-      this.dealform.RootCid = param.RootCid
-      queryAsk(this.dealform).then(response => {
-        // this.list = response.data.list
-        // this.listLoading = false
-        // this.total = response.data.total
-        let v = response.data
-        console.log(v)
+      this.Loading=true
+      this.ask.miner = param.MinerId
+      this.dealAsk.MinerId = param.Miner
+      this.dealAsk.RootCid = param.RootCid
+      this.dealAsk.MemberID = param.MemberID
+      if (this.ask.miner ===''){
+        this.ask.miner = 'f023581'
+      }
+      queryAsk(this.ask).then(response => {
+        this.dealform = response.data
+        this.dealform.Expiry = getExpiryTime(response.data.Expiry)
+        this.Loading=false
+        //getTime(oldTime)
+        //alert(getExpiryTime(response.data.Expiry))
+      }).catch(error => {
+        Message.error('not miner')
+        this.Loading=false
+      })
+    },
+    queryAskDeal(){
+      this.deal = true 
+      this.Loading=true
+      // this.dealform.MemberID = param.MemberID
+      // this.dealform.miner = param.MinerID
+      // this.dealform.RootCid = param.RootCid
+      this.ask.miner =  this.dealform.Miner
+      queryAsk(this.ask).then(response => {
+        this.dealform = response.data
+        this.dealform.miner = this.dealform.Miner
+        this.dealform.Expiry = getExpiryTime(response.data.Expiry)
+        this.Loading=false
+        //getTime(oldTime)
+        //alert(getExpiryTime(response.data.Expiry))
+      }).catch(error => {
+        Message.error('not miner')
+        this.Loading=false
+      })
+    },
+    dealAsk1(){
+       this.dealAsk.MinerId = this.dealform.Miner
+      // this.dealAsk.RootCid = this.dealform.RootCid
+      // this.dealAsk.MemberID = this.dealform.MemberID
+      dealAsk(this.dealAsk).then(response => {
+        alert("已发起交易!")
+        this.Loading=false
+        this.deal = false
+        //getTime(oldTime)
+        //alert(getExpiryTime(response.data.Expiry))
+      }).catch(error => {
+        Message.error('not miner')
+        this.Loading=false
+        this.deal = false
       })
     }
+    
   }
 }
 </script>

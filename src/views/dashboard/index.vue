@@ -1,11 +1,14 @@
 <template>
   <div class="dashboard-container">
-    <div class="dashboard-text">name: {{ name }}</div>
+    <div class="dashboard-text">
+      height：{{height}}
+    </div>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
+import { getNowHeight } from '@/utils/auth'
 
 export default {
   name: 'Dashboard',
@@ -13,7 +16,20 @@ export default {
     ...mapGetters([
       'name'
     ])
-  }
+  },
+  date(){
+    return{
+      height:0
+    }
+  },
+  created(){
+    this.height = getNowHeight()
+  },
+  methods: {
+    NowHeight(){
+      this.height = getNowHeight()
+    }
+  },
 }
 </script>
 
