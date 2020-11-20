@@ -12,11 +12,11 @@
   </el-select>
       <el-button type="primary" @click="getList" >搜索</el-button>
       <el-button type="primary" @click="dialogVisible = true" style="margin-left: 20px;" >上传文件</el-button>
-      <el-dialog
+       <el-dialog
     title="请选择文件"
     :visible.sync="dialogVisible"
     width="30%">
-  <el-upload
+    <el-upload
         class="upload-demo"
         :action="base_api"
         :on-preview="handlePreview"
@@ -38,31 +38,73 @@
   </span> -->
 
 </el-dialog>
-</div>
-<div style="">
-  <div class="image" :key="i" v-for="(item,i) in list" @click="fileDialog(item)" >
-      <div v-if="item.Type==2">
-        <img  src="./2.jpg" style="margin-top:40px;margin-left:55px;height:120px;width:100px;">
-      </div>
-      <div v-else style="position: relative;">
-        <img  :src="imageurl" style="margin-top:40px;margin-left:55px;height:120px;width:100px;">
-        <span class="text-type" style="">{{item.typename}}</span>
-      </div>
-      
-      <span class="text-shenglue"  >{{item.Filename}}</span>
-      <span class="textsize"  >{{item.FileSize}}B</span>
-  </div>
-</div>
+    </div>
+    <el-table
+      v-loading="listLoading"
+      :data="list"
+      element-loading-text="Loading"
+      border
+      fit
+      highlight-current-row
+      style="margin-top:10px;"
+    >
+      <el-table-column align="center" label="ID" width="60">
+        <template slot-scope="scope">
+          {{ scope.row.Id }}
+        </template>
+      </el-table-column>
+      <el-table-column label="FileName" >
+        <template slot-scope="scope">
+          {{ scope.row.Filename }}
+        </template>
+      </el-table-column>
+      <!-- <el-table-column label="IpfsAddr" align="center" :show-overflow-tooltip='true'> -->
+      <el-table-column label="FileSize" align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.FileSize }}0</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="DealId" align="center">
+        <template slot-scope="scope">
+          {{ scope.row.DealId }}
+        </template>
+      </el-table-column>
+      <el-table-column label="MinerId" align="center">
+        <template slot-scope="scope">
+          {{ scope.row.MinerId }}
+        </template>
+      </el-table-column>
+      <el-table-column label="Price" align="center">
+        <template slot-scope="scope">
+          {{ scope.row.Price }}
+        </template>
+      </el-table-column>
+      <el-table-column label="RootCid" align="center" :show-overflow-tooltip='true'>
+        <template slot-scope="scope">
+          {{ scope.row.RootCid }}
+        </template>
+      </el-table-column>
+      <!-- <el-table-column class-name="status-col" label="Status"  align="center">
+        <template slot-scope="scope">
+          <el-tag :type="scope.row.status | statusFilter">{{ scope.row.status }}</el-tag>
+        </template>
+      </el-table-column> -->
+      <el-table-column align="center" prop="created_at" label="CreateTime" >
+        <template slot-scope="scope">
+          <!-- <i class="el-icon-time" /> -->
+          <span>{{ scope.row.CreateTime }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="操作" width="80" align="center">
+      <template slot-scope="scope">
+        <el-button
+          size="mini"
+          @click="handleDeal(scope.row)">deal</el-button>
+      </template>
+    </el-table-column>
+    </el-table>
 
-<el-dialog
-  title="提示"
-  :visible.sync="filebool"
-  width="30%">
-  <span>这是一段信息</span>
- 
-</el-dialog>
-
-  <div class="block" style="bottom:50px;position:absolute;left:70%;">
+  <div class="block" style="margin-top:10px;float:right;">
     <!-- layout="total, sizes, prev, pager, next, jumper" -->
     <el-pagination
       background
@@ -74,6 +116,7 @@
       :total="total">
     </el-pagination>
   </div>
+  
   <el-dialog
   title="Storage Deals"
   :visible.sync="deal"
@@ -105,17 +148,20 @@
     
   </div>
 
+  
+
   <span slot="footer" class="dialog-footer">
     <el-button type="primary" @click="queryAskDeal">deal</el-button>
     <el-button type="primary" @click="dealAsk1">确 定</el-button>
   </span>
 </el-dialog>
+
   </div>
 </template>
 
 <script>
 import { getList } from '@/api/table'
-import { queryAsk,dealAsk,getFtypes,fileDownload } from '@/api/files'
+import { queryAsk,dealAsk,getFtypes } from '@/api/files/'
 import { getToken,getExpiryTime,getFileType } from '@/utils/auth'
 
 export default {
@@ -134,12 +180,6 @@ export default {
       uploadh:{
         token:''
       },
-      filebool: false,
-      fileparam: {
-        id:0,
-      },
-      //imageurl : './2.jpg',
-      imageurl : require('./3.png'),
       fileList: undefined,
       list: null,
       listLoading: true,
@@ -181,18 +221,12 @@ export default {
   methods: {
     fetchData() {
       this.listLoading = true
-      this.getList()
-      // getList(this.pageParams).then(response => {
-      //   this.list = response.data.list
-      //   for (let i= 0;i<response.data.list.length;i++){
-      //     let ty = response.data.list[i].Filename.split('.')
-      //     if (ty.length>1){
-      //       this.list[i].typename = ty[ty.length-1]
-      //     }
-      //   }
-      //   this.listLoading = false
-      //   this.total = response.data.total
-      // })
+    
+      getList(this.pageParams).then(response => {
+        this.list = response.data.list
+        this.listLoading = false
+        this.total = response.data.total
+      })
       getFtypes().then(response => {
         for(let i=0;i<response.data.length;i++){
           let data={value:0,label:''} 
@@ -230,23 +264,21 @@ export default {
     handleSizeChange(param){
       this.pageParams.pageSize = param
       this.listLoading = true
-      // this.getList(this.pageParams).then(response => {
-      //   this.list = response.data.list
-      //   this.listLoading = false
-      //   this.total = response.data.total
-      // })
-      this.getList()
+      getList(this.pageParams).then(response => {
+        this.list = response.data.list
+        this.listLoading = false
+        this.total = response.data.total
+      })
     },
     handleCurrentChange(param){
       // alert(param)
       this.pageParams.pageNum = param
       this.listLoading = true
-      // getList(this.pageParams).then(response => {
-      //   this.list = response.data.list
-      //   this.listLoading = false
-      //   this.total = response.data.total
-      // })
-      this.getList()
+      getList(this.pageParams).then(response => {
+        this.list = response.data.list
+        this.listLoading = false
+        this.total = response.data.total
+      })
     },
     getList(){
       // alert(param)
@@ -254,12 +286,6 @@ export default {
       this.listLoading = true
       getList(this.pageParams).then(response => {
         this.list = response.data.list
-        for (let i= 0;i<response.data.list.length;i++){
-          let ty = response.data.list[i].Filename.split('.')
-          if (ty.length>1){
-            this.list[i].typename = ty[ty.length-1]
-          }
-        }
         this.listLoading = false
         this.total = response.data.total
       })
@@ -318,12 +344,6 @@ export default {
         this.Loading=false
         this.deal = false
       })
-    },
-    fileDialog(params){
-      console.log(params)
-      this.filebool = true
-      this.fileparam.id = params.Id
-      fileDownload(this.fileparam)
     }
     
   }
@@ -331,83 +351,5 @@ export default {
 </script>
 
 <style>
-.image{
-  margin-top:30px;
-  margin-left:30px;
-  width:210px;
-  height:220px;
-  background:rgb(218, 218, 218);
-  float:left;
-  border-top-left-radius: 8px ;
-  border-top-right-radius: 8px ;
-  border-bottom-left-radius: 8px;
-  border-bottom-right-radius: 8px;
-}
-.image:hover {
-    cursor:pointer;
-    transform:scale(1.1) translateZ(0); 
-    -webkit-box-shadow: #ccc 0px 10px 10px;
-    -moz-box-shadow: #ccc 0px 10px 10px;
-    box-shadow: #ccc 0px 10px 10px;
-}
-.file{
-  margin-top:40px;
-  margin-left:55px;
-  height:120px;
-  width:100px;
-  background: rgb(218, 218, 218);
-  background-image: url('./3.png');
-  border-top-left-radius: 6px ;
-  border-top-right-radius: 6px ;
-  border-bottom-left-radius: 6px;
-  border-bottom-right-radius: 6px;
-}
-.text-shenglue{
-	display:block;
-	word-break:keep-all;
-	white-space:nowrap;
-	overflow:hidden;
-	text-overflow:ellipsis;
-	-o-text-overflow:ellipsis;
-	-icab-text-overflow:ellipsis;
-	-khtml-text-overflow:ellipsis;
-	-moz-text-overflow: ellipsis;
-  -webkit-text-overflow:ellipsis;
-  max-width:210px;
-  margin-top: 10px;
-  width: 240px;
-  text-align:center;
-  color:rgb(89, 89, 109);
-}
-.textsize{
-  display:block;
-	word-break:keep-all;
-	white-space:nowrap;
-	overflow:hidden;
-	text-overflow:ellipsis;
-	-o-text-overflow:ellipsis;
-	-icab-text-overflow:ellipsis;
-	-khtml-text-overflow:ellipsis;
-	-moz-text-overflow: ellipsis;
-  -webkit-text-overflow:ellipsis;
-  max-width:210px;
-  margin-top: 4px;
-  width: 240px;
-  text-align:center;
-  font-size:10px;
-  color:rgb(89, 89, 109);
-  transition: all 0.3s;
-}
-.text-type{
-  position: absolute; 
-  max-width:210px;   
-  top: 95px; 
-  left: 0px; 
-  text-align:center;
-  font-size:20px;
-  width: 240px; 
-  color: white;
-  
-}
 
 </style>

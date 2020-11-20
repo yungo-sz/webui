@@ -74,24 +74,36 @@ export const constantRoutes = [
   {
     path: '/files',
     component: Layout,
-    redirect: '/files/all',
-    name: 'All',
-    meta: { title: 'Files', icon: 'el-icon-files' },
     children: [
       {
         path: 'table',
         name: 'Table',
         component: () => import('@/views/files/index'),
-        meta: { title: 'All', icon: 'el-icon-help' }
-      },
-      {
-        path: 'images',
-        name: 'Images',
-        component: () => import('@/views/tree/index'),
-        meta: { title: 'Images', icon: 'el-icon-picture' }
+        meta: { title: 'Files', icon: 'el-icon-files' }
       }
     ]
   },
+  // {
+  //   path: '/files',
+  //   component: Layout,
+  //   redirect: '/files/all',
+  //   name: 'All',
+  //   meta: { title: 'Files', icon: 'el-icon-files' },
+  //   children: [
+  //     {
+  //       path: 'table',
+  //       name: 'Table',
+  //       component: () => import('@/views/files/index'),
+  //       meta: { title: 'All', icon: 'el-icon-help' }
+  //     },
+  //     {
+  //       path: 'images',
+  //       name: 'Images',
+  //       component: () => import('@/views/tree/index'),
+  //       meta: { title: 'Images', icon: 'el-icon-picture' }
+  //     }
+  //   ]
+  // },
 
   {
     path: '/network',

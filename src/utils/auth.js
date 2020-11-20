@@ -32,3 +32,14 @@ export function getNowHeight(){
   let height = (Date.parse(new Date())-Date.parse(genesis))/30/1000
   return parseInt(height)-1
 }
+
+export function getFileType(str){
+  let MapFileType = new Map([
+  ["bmp",1],["gif",1],["jpg",1],["pic",1],["png",1],["tif",1],
+  ["txt",2],["doc",2],["hlp",2],["wps",2],["rtf",2],["html",2],["pdf",2],
+  ["avi",3],["mpg",3],["mov",3],["swf",3],["rm",3],["mkv",3],["rmvb",3],["ogg",3],["mod",3],["wmv",3],["qt",3],["asf",3],["navi",3],["divx",3],["mpeg",3],["dat",3],["mp4",3],
+  ["wav",4],["aif",4],["au",4],["mp3",4],["ram",4],["wma",4],["mmf",4],["amr",4],["aac",4],["flac",4],
+  ])
+  
+  return MapFileType.get('jpg')
+}

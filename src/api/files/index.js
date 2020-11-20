@@ -14,3 +14,17 @@ export function dealAsk(params) {
     params
   })
 }
+export function getFtypes(params) {
+  return request({
+    url: '/yungo/ftypes',
+    method: 'get',
+    params
+  })
+}
+export function fileDownload(params) {
+  return request({
+    url: '/yungo/download',
+    method: 'get',
+    params
+  })
+}

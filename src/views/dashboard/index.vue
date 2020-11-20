@@ -8,7 +8,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { getNowHeight } from '@/utils/auth'
+import { getNowHeight,getFileType } from '@/utils/auth'
 
 export default {
   name: 'Dashboard',
@@ -19,7 +19,8 @@ export default {
   },
   date(){
     return{
-      height:0
+      height:0,
+      str:0,
     }
   },
   created(){

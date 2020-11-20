@@ -10,7 +10,7 @@
 
   <div slot="header" class="clearfix">
       <div class="head-left">
-        <img src="./2.jpg" style="height:80px;width:80px;">
+        <img :src="imageurl" style="height:80px;width:80px;">
       </div>
       <div class="head-right">
         <div style="margin-top:10px;">
@@ -79,6 +79,7 @@ export default {
   },
   data() {
     return {
+      imageurl: './2.jpg',
       dysncParamsText:'动态参数',
       form: {
         name: '',

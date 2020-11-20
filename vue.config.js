@@ -47,7 +47,19 @@ module.exports = {
         changeOrigin: true
       },
     }
-  },
+  // proxy: {
+  //   '/': {
+  //     target: "http://183.61.251.226:3000/",
+  //     pathRewrite: {
+  //       '^/': '' 
+  //     },
+  //     ws: false,
+  //     changeOrigin: true
+  //   },
+  // }
+},
+
+
   // devServer: {
   //   port: port,
   //   open: true,
