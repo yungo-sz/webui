@@ -47,7 +47,7 @@
         <el-input
           :key="passwordType2"
           ref="password"
-          v-model="loginForm.password"
+          v-model="password2"
           :type="passwordType2"
           placeholder="Again Password"
           name="password"
@@ -89,17 +89,22 @@ export default {
       if (value.length < 6) {
         callback(new Error('The password can not be less than 6 digits'))
       } else {
+        if (this.password2!=this.loginForm.password&&this.password2!=""){
+          callback(new Error('The passwords are different'))
+        }
         callback()
       }
     }
     return {
       loginForm: {
-        username: 'admin',
-        password: '111111'
+        username: '',
+        password: '',
+        password2: '',
       },
+      password2: '',
       loginRules: {
         username: [{ required: true, trigger: 'blur', validator: validateUsername }],
-        password: [{ required: true, trigger: 'blur', validator: validatePassword }]
+        password: [{ required: true, trigger: 'blur', validator: validatePassword }],
       },
       loading: false,
       passwordType1: 'password',
@@ -159,6 +164,7 @@ export default {
           register(this.loginForm).then(res=>{
             console.log('成功返回结果')
             console.log(res)
+            this.$router.push({path:this.redirect || '/'})
           })
           // this.$store.dispatch('user/register', this.loginForm).then(() => {
           //   this.$router.push({ path: this.redirect || '/' })

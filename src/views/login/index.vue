@@ -42,7 +42,7 @@
       </el-form-item>
 
       <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">登录</el-button>
-      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;margin-left:0px;" @click.native.prevent="handleRegister">注册</el-button>
+      <el-button :loading="loading1" type="primary" style="width:100%;margin-bottom:30px;margin-left:0px;" @click.native.prevent="handleRegister">注册</el-button>
 
       <div class="tips">
         <span style="margin-right:20px;">username: admin</span>
@@ -76,7 +76,7 @@ export default {
     }
     return {
       loginForm: {
-        username: 'admin',
+        username: 'admin1',
         password: '111111'
       },
       loginRules: {
@@ -84,6 +84,7 @@ export default {
         password: [{ required: true, trigger: 'blur', validator: validatePassword }]
       },
       loading: false,
+      loading1: false,
       passwordType: 'password',
       redirect: undefined
     }
@@ -124,8 +125,10 @@ export default {
       })
     },
     handleRegister() {
+          this.loading1 = true
           this.$store.dispatch('user/register', this.loginForm ).then(() => { 
           this.$router.push({ path: '/register' })
+          this.loading1 = false
       })
     },
    }

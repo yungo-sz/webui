@@ -2,15 +2,16 @@
   <div class="app-container">
     <div>
       <!-- <el-input placeholder="请输入内容" style="width:240px;" ></el-input> -->
-      <el-select v-model="pageParams.type" style="margin-right: 10px; width:200px;" placeholder="文件类型">
+      <el-select v-model="pageParams.type" style="margin-left: 20px;margin-right: 10px; width:220px;" @change="getList" placeholder="文件类型">
     <el-option
       v-for="item in options"
       :key="item.value"
       :label="item.label"
-      :value="item.value">
+      :value="item.value"
+      >
     </el-option>
   </el-select>
-      <el-button type="primary" @click="getList" >搜索</el-button>
+      <!-- <el-button type="primary" @click="getList" >搜索</el-button> -->
       <el-button type="primary" @click="dialogVisible = true" style="margin-left: 20px;" >上传文件</el-button>
       <el-dialog
     title="请选择文件"
@@ -41,11 +42,11 @@
 </div>
 <div style="">
   <div class="image" :key="i" v-for="(item,i) in list" @click="fileDialog(item)" >
-      <div v-if="item.Type==2">
-        <img  src="./2.jpg" style="margin-top:40px;margin-left:55px;height:120px;width:100px;">
+      <div v-if="item.Type==1">
+        <img  :src="item.imgurl" style="margin-top:40px;margin-left:55px;height:120px;width:100px;">
       </div>
       <div v-else style="position: relative;">
-        <img  :src="imageurl" style="margin-top:40px;margin-left:55px;height:120px;width:100px;">
+        <img  src="./3.png" style="margin-top:40px;margin-left:55px;height:120px;width:100px;">
         <span class="text-type" style="">{{item.typename}}</span>
       </div>
       
@@ -57,8 +58,8 @@
 <el-dialog
   title="提示"
   :visible.sync="filebool"
-  width="30%">
-  <span>这是一段信息</span>
+ >
+  <img :src="imageurl" >
  
 </el-dialog>
 
@@ -259,9 +260,11 @@ export default {
           if (ty.length>1){
             this.list[i].typename = ty[ty.length-1]
           }
+          this.list[i].imgurl= process.env.VUE_APP_BASE_API+'yungo/download?id='+this.list[i].Id+"&token="+getToken()
         }
         this.listLoading = false
         this.total = response.data.total
+        console.log(this.list)
       })
     },
     handleDeal(param){
@@ -321,9 +324,12 @@ export default {
     },
     fileDialog(params){
       console.log(params)
-      this.filebool = true
+      //window.location.href=params.imgurl
       this.fileparam.id = params.Id
-      fileDownload(this.fileparam)
+      this.imageurl = params.imgurl
+      //fileDownload(this.fileparam)
+      //alert(this.imageurl)
+       this.filebool = true
     }
     
   }

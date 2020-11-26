@@ -49,13 +49,12 @@ const actions = {
     })
   },
   register({ commit }, userInfo) {
-     alert("注册！")
+     //alert("注册！")
   },
 
-  // get user info  就这里调用了
-  getInfo({ commit, state }) {//这个命名 有点奇怪 第一次见  这是刚刚那边调用的方法名称 
+  getInfo({ commit, state }) {//
     return new Promise((resolve, reject) => {
-      getInfo(state.token).then(response => {//这里调用的是  getInfo } from '@/api/user' 这个方法
+      getInfo(state.token).then(response => {
         const { data } = response
 
         if (!data) {
