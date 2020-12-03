@@ -7,27 +7,46 @@
       border
       fit
       highlight-current-row
+      max-height="500px"
     >
-      <el-table-column align="center" label="ID" width="95">
+    <!--
+      <el-table-column align="center" label="ID" >
         <template slot-scope="scope">
           {{ scope.$index }}
         </template>
       </el-table-column>
-      <el-table-column label="Title">
+      -->
+      <el-table-column label="ID" width="500" align="center">
         <template slot-scope="scope">
-          {{ scope.row.title }}
+          <span>{{ scope.row.Peer.ID }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Author" width="110" align="center">
+      <el-table-column label="City" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.author }}</span>
+          {{ scope.row.City||'N/A' }}
         </template>
       </el-table-column>
-      <el-table-column label="Pageviews" width="110" align="center">
+      <el-table-column label="Country"  align="center">
         <template slot-scope="scope">
-          {{ scope.row.pageviews }}
+          {{ scope.row.Country }}
         </template>
       </el-table-column>
+      <el-table-column label="Latitude" align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.Latitude }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="Longitude" align="center">
+        <template slot-scope="scope">
+          {{ scope.row.Longitude }}
+        </template>
+      </el-table-column>
+      <el-table-column label="Longitude" align="center">
+        <template slot-scope="scope">
+          {{ scope.row.Longitude }}
+        </template>
+      </el-table-column>
+      <!--
       <el-table-column class-name="status-col" label="Status" width="110" align="center">
         <template slot-scope="scope">
           <el-tag :type="scope.row.status | statusFilter">{{ scope.row.status }}</el-tag>
@@ -39,6 +58,7 @@
           <span>{{ scope.row.display_time }}</span>
         </template>
       </el-table-column>
+      -->
     </el-table>
 
     <div class="block" style="margin-top:10px;float:right;">
@@ -48,7 +68,8 @@
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
       :page-sizes="[10, 20, 50, 100]"
-      :page-size="10"
+      :page-size="pageParams.pageSize"
+      :current-page="pageParams.pageNum"
       layout="sizes, prev, pager, next, jumper"
       :total="total">
     </el-pagination>
@@ -58,8 +79,8 @@
 </template>
 
 <script>
-import { getList } from '@/api/table'
-
+import { getList,netpeers } from '@/api/table'
+console.log(netpeers)
 export default {
   filters: {
     statusFilter(status) {
@@ -73,7 +94,7 @@ export default {
   },
   data() {
     return {
-      list: null,
+      list: [],
       listLoading: true,
       pageParams:{
           pageNum: 1,
@@ -88,29 +109,30 @@ export default {
   methods: {
     fetchData() {
       this.listLoading = true
-      getList(this.pageParams).then(response => {
-        this.list = response.data.list
+      netpeers(this.pageParams).then(response => {
+        this.list = response.data
         this.listLoading = false
+        this.total=response.data.length
       })
     },
     handleSizeChange(param){
       this.pageParams.pageSize = param
-      this.listLoading = true
-      getList(this.pageParams).then(response => {
-        this.list = response.data.list
-        this.listLoading = false
-        this.total = response.data.total
-      })
+     // this.listLoading = true
+     // netpeers(this.pageParams).then(response => {
+       // this.list = response.data
+       // this.listLoading = false
+       // this.total = response.data.length
+     // })
     },
     handleCurrentChange(param){
       // alert(param)
       this.pageParams.pageNum = param
-      this.listLoading = true
-      getList(this.pageParams).then(response => {
-        this.list = response.data.list
-        this.listLoading = false
-        this.total = response.data.total
-      })
+      //this.listLoading = true
+     // netpeers(this.pageParams).then(response => {
+      //  this.list = response.data
+      //  this.listLoading = false
+        //this.total = response.data.length
+     // })
     }
   }
 }

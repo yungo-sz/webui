@@ -15,3 +15,27 @@ export function getList(params) {
     params
   })
 }
+
+export const netminers = params => request({
+  url: '/yungo/netminers',
+  method: 'get',
+  params
+})
+
+export const netpeers = params => request({
+  url: '/yungo/netpeers',
+  method: 'get',
+  params
+})
+
+export const minerinfo = params => request({
+  url: '/yungo/minerinfo',
+  method: 'get',
+  params
+})
+
+export const queryAsk = params => request({
+  url: '/yungo/queryask',
+  method: 'get',
+  params
+})

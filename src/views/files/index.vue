@@ -42,28 +42,77 @@
 </div>
 <div style="">
   <div class="image" :key="i" v-for="(item,i) in list" @click="fileDialog(item)" >
-      <div v-if="item.Type==1">
+      <div class="image1" v-if="item.Type==1">
         <img  :src="item.imgurl" style="margin-top:40px;margin-left:55px;height:120px;width:100px;">
+        <!-- <span class="text-type" style="">{{item.typename}}</span> -->
+        <span class="text-shenglue">{{item.Filename}}</span>
+        <span class="textsize">{{item.FileSize}}</span>
       </div>
-      <div v-else style="position: relative;">
+      <!-- <div v-else-if="item.Type==2" >
+        <span class="text-type" style="">文档</span>
+      </div> -->
+      <div v-else-if="item.Type==3">
+        <video width="100%" height="100%" controls>
+          <source :src="item.imgurl" type="video/mp4">
+          <source src="movie.ogg" type="video/ogg">
+          您的浏览器不支持 HTML5 video 标签。
+        </video>
+        <!-- <span class="text-type" style="">{{item.typename}}</span> -->
+        <span class="text-shenglue">{{item.Filename}}</span>
+        <span class="textsize">{{item.FileSize}}</span>
+      </div>
+      <div v-else-if="item.Type==4">
+        <audio style="margin-top:0px;height:120px;width:100%;" controls>
+          <source :src="item.imgurl" type="audio/ogg">
+          <source :src="item.imgurl" type="audio/mpeg">
+        您的浏览器不支持 audio 元素。
+        </audio>
+        <!-- <span class="text-type" style="">{{item.typename}}</span> -->
+        <span class="text-shenglue">{{item.Filename}}</span>
+        <span class="textsize">{{item.FileSize}}</span>
+      </div>
+      <div class="image1" v-else style="position: relative;">
         <img  src="./3.png" style="margin-top:40px;margin-left:55px;height:120px;width:100px;">
         <span class="text-type" style="">{{item.typename}}</span>
+        <span class="text-shenglue">{{item.Filename}}</span>
+      <span class="textsize">{{item.FileSize}}</span>
       </div>
       
-      <span class="text-shenglue"  >{{item.Filename}}</span>
-      <span class="textsize"  >{{item.FileSize}}B</span>
   </div>
 </div>
 
 <el-dialog
-  title="提示"
+  :title="dealFile.name"
   :visible.sync="filebool"
+  width="500px"
  >
-  <img :src="imageurl" >
- 
+<div class="app-container">
+    <el-form ref="form" label-position="left" label-width="120px" >
+      <el-form-item label="Status">
+        <span>unknow</span>
+      </el-form-item>
+      <el-divider></el-divider>
+      <el-form-item label="Size" >
+        <span>{{dealFile.size}}</span> 
+      </el-form-item>
+      <el-divider></el-divider>
+      <!-- <el-form-item label="Mimetype" >
+
+      </el-form-item> -->
+      
+      <el-form-item label="Created At">
+        <span>{{dealFile.crateAt}}</span>
+      </el-form-item>
+      <el-divider></el-divider>
+    </el-form>
+  </div>
+
 </el-dialog>
 
-  <div class="block" style="bottom:50px;position:absolute;left:70%;">
+
+
+
+<div class="block" style="bottom:50px;position:absolute;left:70%;">
     <!-- layout="total, sizes, prev, pager, next, jumper" -->
     <el-pagination
       background
@@ -117,7 +166,7 @@
 <script>
 import { getList } from '@/api/table'
 import { queryAsk,dealAsk,getFtypes,fileDownload } from '@/api/files'
-import { getToken,getExpiryTime,getFileType } from '@/utils/auth'
+import { getToken,getExpiryTime,getFileType,getTime,getFileSizeByBit } from '@/utils/auth'
 
 export default {
   filters: {
@@ -139,6 +188,7 @@ export default {
       fileparam: {
         id:0,
       },
+      title : '',
       //imageurl : './2.jpg',
       imageurl : require('./3.png'),
       fileList: undefined,
@@ -154,9 +204,13 @@ export default {
         miner: '',
       },
       dealform:{
-        
         miner:'f023013',
       }, 
+      dealFile:{
+        name: '',
+        size: '',
+        crateAt: undefined,
+      },
       dealAsk:{
         MemberID:'',
         MinerId:'',
@@ -261,6 +315,8 @@ export default {
             this.list[i].typename = ty[ty.length-1]
           }
           this.list[i].imgurl= process.env.VUE_APP_BASE_API+'yungo/download?id='+this.list[i].Id+"&token="+getToken()
+
+          this.list[i].FileSize = getFileSizeByBit(response.data.list[i].FileSize)
         }
         this.listLoading = false
         this.total = response.data.total
@@ -324,12 +380,14 @@ export default {
     },
     fileDialog(params){
       console.log(params)
-      //window.location.href=params.imgurl
+      this.title = params.Filename
+      let time = new Date(params.CreateTime)
+      this.dealFile.crateAt = getTime(time)
+      this.dealFile.size = params.FileSize
+      this.dealFile.name = params.Filename
       this.fileparam.id = params.Id
       this.imageurl = params.imgurl
-      //fileDownload(this.fileparam)
-      //alert(this.imageurl)
-       this.filebool = true
+      this.filebool = true
     }
     
   }
@@ -349,7 +407,24 @@ export default {
   border-bottom-left-radius: 8px;
   border-bottom-right-radius: 8px;
 }
-.image:hover {
+/* .image:hover {
+    cursor:pointer;
+    transform:scale(1.1) translateZ(0); 
+    -webkit-box-shadow: #ccc 0px 10px 10px;
+    -moz-box-shadow: #ccc 0px 10px 10px;
+    box-shadow: #ccc 0px 10px 10px;
+} */
+.image1{
+  width:210px;
+  height:220px;
+  background:rgb(218, 218, 218);
+  float:left;
+  border-top-left-radius: 8px ;
+  border-top-right-radius: 8px ;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+.image1:hover {
     cursor:pointer;
     transform:scale(1.1) translateZ(0); 
     -webkit-box-shadow: #ccc 0px 10px 10px;

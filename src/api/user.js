@@ -37,10 +37,13 @@ export function logout() {
   })
 }
 
-export function register(data) {
-  return request({
-    url:'/register',
-    method: 'post',
-    data
-  })
-}
+export const register = data => request({
+  url: '/register',
+  method: 'post',
+  data
+})
+
+export const memberinfo = () => request({
+  url: '/yungo/memberinfo',
+  method: 'get'
+})

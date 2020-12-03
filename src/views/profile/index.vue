@@ -7,17 +7,16 @@
   </div> -->
   <div>
 <el-card class="box-card">
-
   <div slot="header" class="clearfix">
       <div class="head-left">
-        <img :src="imageurl" style="height:80px;width:80px;">
+        <img :src="info.HeadUrl" style="height:80px;width:80px;">
       </div>
       <div class="head-right">
         <div style="margin-top:10px;">
-        <span>lzj</span>
+        <span>{{info.Username}}</span>
         <br>
         <br>
-        <span>469230190@qq.com</span>
+        <span>{{info.Email}}</span>
         </div>
       </div>
   </div>
@@ -26,7 +25,14 @@
       <span style="color:gray;">phone</span>
     </div>
     <div style="width:50%;float:left;">
-      <span style="width:50px">19142755309</span>
+      <span style="width:50px">{{info.Mobile}}</span>
+    </div>
+    <br>
+    <div style="width:30%;margin-top:18px;m;float:left;">
+      <span style="color:gray;">wallet</span>
+    </div>
+    <div style="width:50%;margin-top:18px;float:left;">
+      <span style="width:50px">{{info.Wallet}}</span>
     </div>
     <br>
     <div style="width:30%;margin-top:18px;m;float:left;">
@@ -70,6 +76,7 @@ import ChartCard from '@/components/ChartCard'
 import Wallets from '@/components/Wallets/wallets'
 import User from '@/components/User'
 import Password from '@/components/User/password'
+import { memberinfo } from '@/api/user'
 export default {
   components:{
     ChartCard,
@@ -90,10 +97,23 @@ export default {
         type: [],
         resource: '',
         desc: ''
-      }
+      },
+      info:{}
     }
   },
+   mounted() {
+     this.fetchData()
+   },
   methods: {
+    async fetchData(){
+     try{
+      let res = await memberinfo();
+      this.info = res.data||{}
+      console.log(this.info);
+     }catch(e){
+     }finally{
+     }
+    },
     onSubmit() {
       this.$message('submit!')
     },
@@ -123,7 +143,7 @@ export default {
     width: 80px;
     height: 80px;
     float: left;
-    background-color:#FF0000;
+
   }
    .head-right{
     width: 240px;

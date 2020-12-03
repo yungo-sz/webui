@@ -17,6 +17,23 @@ export function removeToken() {
 export function getTime(oldTime){
   return oldTime.toLocaleDateString().replace(/\//g, "-") + " " + oldTime.toTimeString().substr(0, 8)
 }
+export function getFileSizeByBit(size){
+  let count = size
+  let unit = ['B','KB','MB','GB']
+  let k = 0
+  for(let i = 0;i < 4; i++){
+    if (count<1024){
+      break
+    }
+    count = count/1024
+    k++
+  }
+  if (k ==0){
+    return Number(count)+" " +unit[k] 
+  }
+  return Number(count).toFixed(2)+" " +unit[k] 
+}
+
 
 export function getExpiryTime(expiry){
 
@@ -41,5 +58,6 @@ export function getFileType(str){
   ["wav",4],["aif",4],["au",4],["mp3",4],["ram",4],["wma",4],["mmf",4],["amr",4],["aac",4],["flac",4],
   ])
   
-  return MapFileType.get('jpg')
+  // return MapFileType.get('jpg')
+  return MapFileType.get(str)
 }
