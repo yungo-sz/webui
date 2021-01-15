@@ -39,3 +39,15 @@ export const queryAsk = params => request({
   method: 'get',
   params
 })
+
+export const getpleagefil = params => request({
+  url: '/pleagefil',
+  method: 'get',
+  params
+})
+
+export const getstatisticalfil = params => request({
+  url: '/statisticalfil',
+  method: 'get',
+  params
+})

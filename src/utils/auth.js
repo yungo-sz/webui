@@ -47,9 +47,8 @@ export function getNowHeight(){
 
   let genesis = new Date('2020-08-25 06:00:00')
   let height = (Date.parse(new Date())-Date.parse(genesis))/30/1000
-  return parseInt(height)-1
+  return parseInt(height);
 }
-
 export function getFileType(str){
   let MapFileType = new Map([
   ["bmp",1],["gif",1],["jpg",1],["pic",1],["png",1],["tif",1],

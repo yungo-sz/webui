@@ -8,9 +8,9 @@ import getPageTitle from '@/utils/get-page-title'
 
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
-const whiteList = ['/login','/register'] // no redirect whitelist
+const whiteList = ['/login','/register','/'] // no redirect whitelist
 
-router.beforeEach(async(to, from, next) => { //路由跳转的时候  咋进来的 自动跳转鸭  每一个路由跳转都会吗是的
+router.beforeEach(async(to, from, next) => { //路由跳转的时候  咋进来的 自动跳转
   // start progress bar
   NProgress.start()
 
@@ -19,11 +19,13 @@ router.beforeEach(async(to, from, next) => { //路由跳转的时候  咋进来�
 
   // determine whether the user has logged in
   const hasToken = getToken()
-
+  
   if (hasToken) {//有没有token 有吧 getUserInfo的时候存进去了没 
+    //alert(to.path)
     if (to.path === '/login') {
       // if is logged in, redirect to the home page
-      next({ path: '/' })
+      //next({ path: '/' })
+      next()
       NProgress.done()
     } else {
       const hasGetUserInfo = store.getters.name

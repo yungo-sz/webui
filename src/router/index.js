@@ -48,16 +48,22 @@ export const constantRoutes = [
     hidden: true
   },
 
+  // {
+  //   path: '/',
+  //   component: Layout,
+  //   redirect: '/dashboard',
+  //   children: [{
+  //     path: 'dashboard',
+  //     name: 'Dashboard',
+  //     component: () => import('@/views/dashboard/index'),
+  //     meta: { title: 'Home', icon: 'dashboard' }
+  //   }]
+  // },
   {
     path: '/',
-    component: Layout,
-    redirect: '/dashboard',
-    children: [{
-      path: 'dashboard',
-      name: 'Dashboard',
-      component: () => import('@/views/dashboard/index'),
-      meta: { title: 'Home', icon: 'dashboard' }
-    }]
+    //redirectTo: '/dashboard',
+    component: () => import('@/views/dashboard/index'),
+    hidden: true
   },
   {
     path: '/deals',
