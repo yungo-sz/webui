@@ -46,7 +46,7 @@
       {{(pleagelist1.gasfil*this.pleagelist.cnytofil).toFixed(2)|NumberFormat}} ￥
     </div>
   </el-card>
-  <!-- <span class="weeks-title" style="margin-top:10px;float:left;">周统计（每32GB）</span> -->
+  
   <div id="gas">
 
   </div>
